@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/view/Home_Screen/list_homescreen.dart';
+import 'package:note_app/controller/note_screen_controller.dart';
+import 'package:note_app/view/home_Screen/customhomescreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,12 +15,28 @@ class _HomeScreenState extends State<HomeScreen> {
     Colors.green[200],
     Colors.blue[200]
   ];
+  Notescreencontroller Obj = Notescreencontroller();
+  TextEditingController titlecontoller = TextEditingController();
+  TextEditingController descontroller = TextEditingController();
+  TextEditingController datecontroller = TextEditingController();
+  int? selectedindex;
+  //function to removecontroller
+  void clearcontroller() {
+    titlecontoller.clear();
+    descontroller.clear();
+    datecontroller.clear();
+  }
+
+  //function for colorselection
+  void colorselection() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showModalBottomSheet(
+                isScrollControlled: true,
                 context: context,
                 builder: (context) => StatefulBuilder(
                     builder: (context, bottomSetState) => Container(
@@ -33,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             //mainAxisSize: MainAxisSize.min,
                             children: [
                               TextFormField(
+                                controller: titlecontoller,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                       borderSide: BorderSide.none,
@@ -47,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 15,
                               ),
                               TextFormField(
+                                controller: descontroller,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 35, horizontal: 10),
@@ -63,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 15,
                               ),
                               TextFormField(
+                                controller: datecontroller,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                       borderSide: BorderSide.none,
@@ -82,13 +102,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                   itemCount: 4,
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
-                                  itemBuilder: (context, index) => Container(
-                                    // height: 60,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                        color: colorlist[index],
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
+                                  itemBuilder: (context, index) => InkWell(
+                                    onTap: () {
+                                      selectedindex = index;
+                                      bottomSetState(() {});
+                                    },
+                                    child: Container(
+                                      // height: 60,
+                                      width: 50,
+                                      decoration: BoxDecoration(
+                                          color: colorlist[index],
+                                          border: selectedindex == index
+                                              ? Border.all(
+                                                  color: Colors.black, width: 5)
+                                              : Border.all(
+                                                  color: Colors.white54),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                    ),
                                   ),
                                   separatorBuilder: (context, index) =>
                                       SizedBox(
@@ -103,28 +134,46 @@ class _HomeScreenState extends State<HomeScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Expanded(
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      child: Center(child: Text("Save")),
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey[200],
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
+                                    child: InkWell(
+                                      onTap: () {
+                                        //function to add new note
+                                        Obj.addata(
+                                            descontroller.text,
+                                            titlecontoller.text,
+                                            datecontroller.text);
+                                        clearcontroller();
+                                        setState(() {});
+                                        Navigator.pop(context);
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                        child: Center(child: Text("Save")),
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
                                     ),
                                   ),
                                   SizedBox(
                                     width: 10,
                                   ),
                                   Expanded(
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      child: Center(child: Text("Cancel")),
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey[200],
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
+                                    child: InkWell(
+                                      onTap: () {
+                                        clearcontroller();
+                                        Navigator.pop(context);
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                        child: Center(child: Text("Cancel")),
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -145,8 +194,21 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         body: ListView.separated(
-            itemCount: 3,
-            itemBuilder: (context, index) => CustomHomeScreen(),
+            itemCount: Obj.notedetails.length,
+            itemBuilder: (context, index) => Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: CustomHomeScreen(
+                    title: Obj.notedetails[index]["title"],
+                    date: Obj.notedetails[index]["date"],
+                    des: Obj.notedetails[index]["des"],
+                    selectcolors: Obj.notedetails[index]["color"],
+                    ondeletepressed: () {
+                      Obj.deletedata(index);
+                      setState(() {});
+                    },
+                  ),
+                ),
             separatorBuilder: (context, index) => SizedBox(
                   height: 10,
                 )));

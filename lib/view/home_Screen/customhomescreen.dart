@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 
 class CustomHomeScreen extends StatefulWidget {
-  const CustomHomeScreen({super.key});
+  CustomHomeScreen(
+      {super.key,
+      required this.title,
+      required this.date,
+      required this.des,
+      required this.selectcolors,
+      this.ondeletepressed});
+  final String title;
+  final String date;
+  final String des;
+  final Color selectcolors;
+  final void Function()? ondeletepressed;
 
   @override
   State<CustomHomeScreen> createState() => _CustomHomeScreenState();
@@ -14,10 +25,10 @@ class _CustomHomeScreenState extends State<CustomHomeScreen> {
       children: [
         Center(
           child: Container(
-            height: 120,
-            width: 400,
+            // height: 120,
+            // width: 400,
             decoration: BoxDecoration(
-                color: Colors.amber[200],
+                color: widget.selectcolors,
                 borderRadius: BorderRadius.circular(10)),
             child: Padding(
               padding: const EdgeInsets.all(15),
@@ -30,7 +41,7 @@ class _CustomHomeScreenState extends State<CustomHomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "something",
+                          widget.title,
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
@@ -41,21 +52,26 @@ class _CustomHomeScreenState extends State<CustomHomeScreen> {
                               "assets/images/pen.png",
                               color: Colors.black,
                             ),
-                            Icon(Icons.delete),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                widget.ondeletepressed!();
+                              },
+                            )
                           ],
                         )
                       ],
                     ),
                   ),
                   Text(
-                    "hkdskh",
+                    widget.des,
                     style: TextStyle(color: Colors.black),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        "Tue, Feb 20,2024",
+                        widget.date,
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.bold),
                       ),

@@ -1,1 +1,3 @@
-
+class colorconstants {
+  List colors = [];
+}
