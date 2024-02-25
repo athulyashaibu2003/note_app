@@ -16,9 +16,9 @@ class Notescreencontroller {
     // },
   ];
   //function to add data
-  void addata(String title, String des, String date) {
+  void addata(String title, String des, String date, Color selectedcolor) {
     notedetails.add(
-      {"title": title, "des": des, "date": date, "color": Colors.red},
+      {"title": title, "des": des, "date": date, "color": selectedcolor},
     );
   }
 

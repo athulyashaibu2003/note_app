@@ -15,11 +15,13 @@ class _HomeScreenState extends State<HomeScreen> {
     Colors.green[200],
     Colors.blue[200]
   ];
+  static Color selectedcolor = Colors.white;
   Notescreencontroller Obj = Notescreencontroller();
   TextEditingController titlecontoller = TextEditingController();
   TextEditingController descontroller = TextEditingController();
   TextEditingController datecontroller = TextEditingController();
-  int? selectedindex;
+  int selectedindex = 0;
+
   //function to removecontroller
   void clearcontroller() {
     titlecontoller.clear();
@@ -28,7 +30,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //function for colorselection
-  void colorselection() {}
+  // void colorselection(newcolor) {
+  //   // newcolor = selectedcolor;
+  //   selectedcolor = newcolor;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   itemBuilder: (context, index) => InkWell(
                                     onTap: () {
                                       selectedindex = index;
+                                      selectedcolor = colorlist[selectedindex];
                                       bottomSetState(() {});
                                     },
                                     child: Container(
@@ -140,7 +146,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Obj.addata(
                                             descontroller.text,
                                             titlecontoller.text,
-                                            datecontroller.text);
+                                            datecontroller.text,
+                                            selectedcolor);
+
                                         clearcontroller();
                                         setState(() {});
                                         Navigator.pop(context);
