@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class Notescreencontroller {
   List notedetails = [
-    {
-      "title": "someone",
-      "des": "dkjjdj",
-      "date": "12/03/24",
-      "color": Colors.amber
-    },
+    // {
+    //   "title": "someone",
+    //   "des": "dkjjdj",
+    //   "date": "12/03/24",
+    //   "color": Colors.amber
+    // },
     // {
     //   "title": "athulya",
     //   "des": "dont know",

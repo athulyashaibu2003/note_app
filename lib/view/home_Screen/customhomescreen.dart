@@ -7,12 +7,14 @@ class CustomHomeScreen extends StatefulWidget {
       required this.date,
       required this.des,
       required this.selectcolors,
-      this.ondeletepressed});
+      this.ondeletepressed,
+      this.oneditpressed});
   final String title;
   final String date;
   final String des;
   final Color selectcolors;
   final void Function()? ondeletepressed;
+  final void Function()? oneditpressed;
 
   @override
   State<CustomHomeScreen> createState() => _CustomHomeScreenState();
@@ -48,9 +50,14 @@ class _CustomHomeScreenState extends State<CustomHomeScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Image.asset(
-                              "assets/images/pen.png",
-                              color: Colors.black,
+                            IconButton(
+                              icon: Icon(
+                                Icons.edit,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {
+                                widget.oneditpressed!();
+                              },
                             ),
                             IconButton(
                               icon: Icon(Icons.delete),
