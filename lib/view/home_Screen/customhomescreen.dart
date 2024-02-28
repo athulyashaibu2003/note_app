@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 class CustomHomeScreen extends StatefulWidget {
   CustomHomeScreen(
@@ -60,7 +61,10 @@ class _CustomHomeScreenState extends State<CustomHomeScreen> {
                               },
                             ),
                             IconButton(
-                              icon: Icon(Icons.delete),
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.black,
+                              ),
                               onPressed: () {
                                 widget.ondeletepressed!();
                               },
@@ -85,7 +89,12 @@ class _CustomHomeScreenState extends State<CustomHomeScreen> {
                       SizedBox(
                         width: 15,
                       ),
-                      Icon(Icons.share)
+                      IconButton(
+                        icon: Icon(Icons.share),
+                        onPressed: () {
+                          Share.share('${widget.title}\n${widget.des}');
+                        },
+                      )
                     ],
                   )
                 ],

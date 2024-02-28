@@ -27,4 +27,7 @@ class Notescreencontroller {
     notedetails.removeAt(index);
   }
   //function to edit data
+  void editdata(){
+    
+  }
 }
